@@ -7,7 +7,7 @@ name = "ai-infra-common"
 version = "1.0.0"
 description = "Shared Python utilities for AI Infrastructure related operations"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 
 dependencies = []
