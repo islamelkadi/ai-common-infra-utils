@@ -14,7 +14,7 @@ dependencies = []
 
 [project.optional-dependencies]
 gpu = ["torch"]
-dev = ["pytest>=7.0"]
+dev = ["pytest>=7.0", "pytest-cov", "ruff"]
 
 [tool.setuptools.packages.find]
 include = ["src*"]
