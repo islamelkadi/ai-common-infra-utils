@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-infra-common"
+version = "1.0.0"
+description = "Shared Python utilities for AI Infrastructure related operations"
+readme = "README.md"
+requires-python = ">=3.12"
+license = {text = "MIT"}
+
+dependencies = []
+
+[project.optional-dependencies]
+gpu = ["torch"]
+dev = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
