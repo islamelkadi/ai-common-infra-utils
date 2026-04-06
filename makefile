@@ -10,6 +10,7 @@ PYTHON   := $(VENV_DIR)/bin/python
 PIP      := $(VENV_DIR)/bin/pip
 IMAGE    := ai-infra-common
 TAG      := latest
+RUNTIME  ?= finch
 
 .PHONY: help venv install lint format test coverage clean clean-venv docker-build docker-test all
 
@@ -20,17 +21,16 @@ help:
 	@echo ""
 	@echo "Usage: make <target>"
 	@echo ""
-	@grep -E '^## ' $(MAKEFILE_LIST) | sed 's/^## /  /' | column -t -s ':'
+	@awk '/^## / { sub(/^## /, ""); split($$0, a, ": "); printf "  \033[36m%-15s\033[0m %s\n", a[1], a[2] }' $(MAKEFILE_LIST)
 	@echo ""
 
 ## venv: Create virtual environment and install all dependencies
 venv: $(VENV_DIR)/bin/activate
 
-$(VENV_DIR)/bin/activate: requirements.txt pyproject.toml
+$(VENV_DIR)/bin/activate: pyproject.toml
 	python3 -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
-	$(PIP) install -r requirements.txt
-	$(PIP) install -e .
+	$(PIP) install -e ".[dev]"
 	@touch $(VENV_DIR)/bin/activate
 
 ## install: Install package in editable mode with dev deps
@@ -61,13 +61,13 @@ clean:
 clean-venv:
 	rm -rf $(VENV_DIR)
 
-## docker-build: Build the Docker image
+## docker-build: Build the container image
 docker-build:
-	docker build -t $(IMAGE):$(TAG) .
+	$(RUNTIME) build -t $(IMAGE):$(TAG) .
 
-## docker-test: Run tests inside Docker
+## docker-test: Run tests inside container
 docker-test: docker-build
-	docker run --rm $(IMAGE):$(TAG) pytest -v
+	$(RUNTIME) run --rm -v $(PWD)/src:/app/src -v $(PWD)/tests:/app/tests $(IMAGE):$(TAG) pytest -v
 
 ## all: Install, lint, and test
 all: install lint test
