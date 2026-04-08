@@ -6,7 +6,7 @@
 SHELL := /bin/bash
 
 VENV_DIR := .venv
-PYTHON   := $(VENV_DIR)/bin/python
+PYTHON3  := $(shell command -v python3.13 || command -v python3.12 || command -v python3.11 || command -v python3.10 || echo python3)
 PIP      := $(VENV_DIR)/bin/pip
 IMAGE    := ai-infra-common
 TAG      := latest
@@ -28,7 +28,7 @@ help:
 venv: $(VENV_DIR)/bin/activate
 
 $(VENV_DIR)/bin/activate: pyproject.toml
-	python3 -m venv $(VENV_DIR)
+	$(PYTHON3) -m venv $(VENV_DIR)
 	$(PIP) install --upgrade pip
 	$(PIP) install -e ".[dev]"
 	@touch $(VENV_DIR)/bin/activate
@@ -38,19 +38,19 @@ install: venv
 
 ## lint: Run ruff linter
 lint: venv
-	$(VENV_DIR)/bin/ruff check src/ tests/
+	$(VENV_DIR)/bin/ruff check ai_infra_common/ tests/
 
 ## format: Auto-format code with ruff
 format: venv
-	$(VENV_DIR)/bin/ruff format src/ tests/
+	$(VENV_DIR)/bin/ruff format ai_infra_common/ tests/
 
 ## test: Run tests with pytest
 test: venv
-	$(PYTHON) -m pytest -v
+	$(PYTHON3) -m pytest -v
 
 ## coverage: Run tests with coverage report
 coverage: venv
-	$(PYTHON) -m pytest --cov=src --cov-report=term --cov-report=xml -v
+	$(PYTHON3) -m pytest --cov=ai_infra_common --cov-report=term --cov-report=xml -v
 
 ## clean: Remove build artifacts and caches
 clean:
@@ -67,7 +67,7 @@ docker-build:
 
 ## docker-test: Run tests inside container
 docker-test: docker-build
-	$(RUNTIME) run --rm -v $(PWD)/src:/app/src -v $(PWD)/tests:/app/tests $(IMAGE):$(TAG) pytest -v
+	$(RUNTIME) run --rm -v $(PWD)/ai_infra_common:/app/ai_infra_common -v $(PWD)/tests:/app/tests $(IMAGE):$(TAG) pytest -v
 
 ## all: Install, lint, and test
 all: install lint test

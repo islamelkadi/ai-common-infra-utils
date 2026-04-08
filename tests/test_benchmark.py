@@ -1,10 +1,10 @@
-"""Unit tests for src.benchmark."""
+"""Unit tests for ai_infra_common.benchmark."""
 
 import csv
 import os
 import tempfile
 
-from src.benchmark import BenchmarkResult, write_csv
+from ai_infra_common.benchmark import BenchmarkResult, write_csv
 
 
 def test_benchmark_result_defaults():

@@ -1,8 +1,8 @@
-"""Unit tests for src.cli."""
+"""Unit tests for ai_infra_common.cli."""
 
 import argparse
 
-from src.cli import (
+from ai_infra_common.cli import (
     add_benchmark_args,
     add_environment_args,
     add_inference_args,

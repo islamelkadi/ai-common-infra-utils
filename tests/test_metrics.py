@@ -1,6 +1,6 @@
-"""Unit tests for src.metrics."""
+"""Unit tests for ai_infra_common.metrics."""
 
-from src.metrics import GPUMetricsCollector, GPUSnapshot
+from ai_infra_common.metrics import GPUMetricsCollector, GPUSnapshot
 
 
 def test_snapshot_default_values():

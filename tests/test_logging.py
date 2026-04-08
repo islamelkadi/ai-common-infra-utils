@@ -1,10 +1,10 @@
-"""Unit tests for src.logging."""
+"""Unit tests for ai_infra_common.logging."""
 
 import json
 from io import StringIO
 from unittest.mock import patch
 
-from src.logging import log_metric
+from ai_infra_common.logging import log_metric
 
 
 def test_emits_valid_json():
